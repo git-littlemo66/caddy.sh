@@ -6,10 +6,12 @@ cat << INFO
 
 github: https://github.com/moqu66/caddy.sh
 
-INFO
 
-echo '1. 安装'
-echo '2. 卸载'
+1. 安装
+
+2. 卸载
+
+INFO
 
 read -p '请选择[1-2]:' input_select
 

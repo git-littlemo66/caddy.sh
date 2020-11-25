@@ -1,8 +1,29 @@
 #! /usr/bin/bash
+clear
+
 cat << INFO
-Caddy一键安装脚本
-脚本来自: https://sm.link
+.......... Caddy一键脚本 & 脚本来自: https://sm.link ..........
+
+github: https://github.com/moqu66/caddy.sh
+
 INFO
+
+echo '1. 安装'
+echo '2. 卸载'
+
+read -p '请选择[1-2]:' input_select
+
+case $input_select in
+1)
+    install()
+    ;;
+2)
+    uninstall()
+    ;;
+*)
+    echo '请输入正确的选项……'
+    exit 1
+esac
 
 sleep 1.5s
 

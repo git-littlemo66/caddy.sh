@@ -6,12 +6,10 @@ cat << INFO
 
 github: https://github.com/moqu66/caddy.sh
 
-
-1. 安装
-
-2. 卸载
-
 INFO
+
+echo '1. 安装'
+echo '2. 卸载'
 
 read -p '请选择[1-2]:' input_select
 
@@ -46,8 +44,8 @@ case $sys_arch in
     caddy_arch='armv6'
     ;;
 *armv5*)
-caddy_arch='armv5'
-;;
+    caddy_arch='armv5'
+    ;;
 *)
     echo '这个辣鸡脚本暂时不支持你的系统。'
     exit 1

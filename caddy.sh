@@ -1,51 +1,54 @@
 #! /bin/bash
 function install() {
-sys_arch=$(uname -m)
+  sys_arch=$(uname -m)
 
-case $sys_arch in
-'amd64' | 'x86_64')
+  case $sys_arch in
+  'amd64' | 'x86_64')
     caddy_arch='amd64'
     ;;
-*aarch64* | *armv8*)
+  *aarch64* | *armv8*)
     caddy_arch='arm64'
     ;;
-*armv7*)
+  *armv7*)
     caddy_arch='armv7'
     ;;
-*armv6*)
+  *armv6*)
     caddy_arch='armv6'
     ;;
-*armv5*)
+  *armv5*)
     caddy_arch='armv5'
     ;;
-*)
+  *)
     echo '这个辣鸡脚本暂时不支持你的系统。'
     exit 1
-esac
+    ;;
+  esac
 
-latest_version=$(wget -qO- -t1 -T2 https://api.github.com/repos/caddyserver/caddy/releases/latest | grep "tag_name" | head -n 1 | awk -F ":" '{print $2}' | sed 's/\"//g;s/,//g;s/ //g')
+  latest_version=$(wget -qO- -t1 -T2 https://api.github.com/repos/caddyserver/caddy/releases/latest | grep "tag_name" | head -n 1 | awk -F ":" '{print $2}' | sed 's/\"//g;s/,//g;s/ //g')
 
-curl -OL "https://github.com/caddyserver/caddy/releases/latest/download/caddy_${latest_version:1}_linux_${caddy_arch}.tar.gz"
+  curl -OL "https://github.com/caddyserver/caddy/releases/latest/download/caddy_${latest_version:1}_linux_${caddy_arch}.tar.gz"
 
-tar -zxvf caddy_2.2.1_linux_amd64.tar.gz caddy && rm -f caddy_2.2.1_linux_amd64.tar.gz
+  tar -zxvf caddy_2.2.1_linux_amd64.tar.gz caddy && rm -f caddy_2.2.1_linux_amd64.tar.gz
 
-chmod +x caddy && mv caddy /usr/bin/
+  chmod +x caddy && mv caddy /usr/bin/
 
-useradd -c 'Caddy Web Server' -r -m -g caddy -s /usr/bin/nologin caddy
+  groupadd -r caddy
 
-cat > Caddyfile <<EOF
+  useradd -c 'Caddy Web Server' -r -m -g caddy -s /usr/bin/nologin caddy
+
+  cat >Caddyfile <<EOF
 http://localhost {
     respond "Hello, World"
 }
 EOF
 
-mv Caddyfile ~caddy/
+  mv Caddyfile ~caddy/
 
-chmod -R 755 ~caddy
+  chmod -R 755 ~caddy
 
-chown -R caddy:caddy ~caddy
+  chown -R caddy:caddy ~caddy
 
-cat > caddy.service <<EOF
+  cat >caddy.service <<EOF
 [Unit]
 Description=Caddy
 Documentation=https://caddyserver.com/docs/
@@ -68,41 +71,42 @@ AmbientCapabilities=CAP_NET_BIND_SERVICE
 WantedBy=multi-user.target
 EOF
 
-mv caddy.service /etc/systemd/system/
+  mv caddy.service /etc/systemd/system/
 
-systemctl daemon-reload
-systemctl enable caddy
-systemctl start caddy
-systemctl status caddy
+  systemctl daemon-reload
+  systemctl enable caddy
+  systemctl start caddy
+  systemctl status caddy
 
-echo
-echo
-echo '安装完毕。测试地址： http://你的IP'
+  echo
+  echo 'Caddyfile 配置文件路径：/home/caddy/Caddyfile'
+  echo
+  echo '安装完毕。测试地址： http://你的IP'
 }
 
 function uninstall() {
-systemctl stop caddy
-systemctl disable caddy
+  systemctl stop caddy
+  systemctl disable caddy
 
-rm -f /etc/systemd/system/caddy.service
+  rm -f /etc/systemd/system/caddy.service
 
-systemctl daemon-reload
+  systemctl daemon-reload
 
-rm -f /usr/bin/caddy
+  rm -f /usr/bin/caddy
 
-userdel caddy
-groupdel caddy
+  userdel caddy
+  groupdel caddy
 
-echo
-echo
-echo '已经为你卸载完毕'
-echo
-echo '保留 /home/caddy/ 目录以及目录下文件'
+  echo
+  echo
+  echo '已经为你卸载完毕'
+  echo
+  echo '保留 /home/caddy/ 目录以及目录下文件'
 }
 
 clear
 
-cat << INFO
+cat <<INFO
 .......... Caddy一键脚本 & 脚本来自: https://sm.link ..........
 
 github: https://github.com/moqu66/caddy.sh
@@ -116,13 +120,16 @@ INFO
 read -p '请选择[1-2]:' input_select
 
 case $input_select in
-1 ) install
-;;
-2 ) uninstall
-;;
-* )
-    echo '请输入正确的选项……'
-    exit 1
+1)
+  install
+  ;;
+2)
+  uninstall
+  ;;
+*)
+  echo '请输入正确的选项……'
+  exit 1
+  ;;
 esac
 
 sleep 1.5s

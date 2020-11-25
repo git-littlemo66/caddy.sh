@@ -14,13 +14,11 @@ echo '2. 卸载'
 read -p '请选择[1-2]:' input_select
 
 case $input_select in
-1)
-    install()
-    ;;
-2)
-    uninstall()
-    ;;
-*)
+1 ) install
+;;
+2 ) uninstall
+;;
+* )
     echo '请输入正确的选项……'
     exit 1
 esac

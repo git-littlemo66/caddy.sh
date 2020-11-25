@@ -1,31 +1,4 @@
-#! /usr/bin/bash
-clear
-
-cat << INFO
-.......... Caddy一键脚本 & 脚本来自: https://sm.link ..........
-
-github: https://github.com/moqu66/caddy.sh
-
-1. 安装
-
-2. 卸载
-
-INFO
-
-read -p '请选择[1-2]:' input_select
-
-case $input_select in
-1 ) install
-;;
-2 ) uninstall
-;;
-* )
-    echo '请输入正确的选项……'
-    exit 1
-esac
-
-sleep 1.5s
-
+#! /bin/bash
 function install() {
 sys_arch=$(uname -m)
 
@@ -126,3 +99,30 @@ echo '已经为你卸载完毕'
 echo
 echo '保留 /home/caddy/ 目录以及目录下文件'
 }
+
+clear
+
+cat << INFO
+.......... Caddy一键脚本 & 脚本来自: https://sm.link ..........
+
+github: https://github.com/moqu66/caddy.sh
+
+1. 安装
+
+2. 卸载
+
+INFO
+
+read -p '请选择[1-2]:' input_select
+
+case $input_select in
+1 ) install
+;;
+2 ) uninstall
+;;
+* )
+    echo '请输入正确的选项……'
+    exit 1
+esac
+
+sleep 1.5s

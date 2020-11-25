@@ -26,7 +26,7 @@ esac
 
 sleep 1.5s
 
-install() {
+function install() {
 sys_arch=$(uname -m)
 
 case $sys_arch in
@@ -101,9 +101,13 @@ systemctl daemon-reload
 systemctl enable caddy
 systemctl start caddy
 systemctl status caddy
+
+echo
+echo
+echo '安装完毕。测试地址： http://你的IP'
 }
 
-uninstall() {
+function uninstall() {
 systemctl stop caddy
 systemctl disable caddy
 
@@ -115,4 +119,10 @@ rm -f /usr/bin/caddy
 
 userdel caddy
 groupdel caddy
+
+echo
+echo
+echo '已经为你卸载完毕'
+echo
+echo '保留 /home/caddy/ 目录以及目录下文件'
 }

@@ -30,11 +30,17 @@ function install() {
 
   tar -zxvf caddy_2.2.1_linux_amd64.tar.gz caddy && rm -f caddy_2.2.1_linux_amd64.tar.gz
 
-  chmod +x caddy && mv caddy /usr/bin/
+  chmod +x caddy
 
-  groupadd -r caddy
+  mv caddy /usr/bin/
 
-  useradd -c 'Caddy Web Server' -r -m -g caddy -s /usr/bin/nologin caddy
+  groupadd -r caddy && useradd -c 'Caddy Web Server' -r -M -g caddy -s /usr/bin/nologin caddy
+
+  if ! (test -d '/home/caddy'); then
+    mkdir /home/caddy && chown caddy:caddy /home/caddy && chmod 755 /home/caddy
+  else
+    chown caddy:caddy /home/caddy && chmod 755 /home/caddy
+  fi
 
   cat >Caddyfile <<EOF
 http://localhost {

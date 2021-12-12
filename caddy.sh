@@ -113,7 +113,7 @@ function uninstall() {
 clear
 
 cat <<INFO
-.......... Caddy一键脚本 & 脚本来自: https://sm.link ..........
+.......... Caddy一键脚本 & 脚本来自: https://littlemo.cc ..........
 
 github: https://github.com/moqu66/caddy.sh
 
